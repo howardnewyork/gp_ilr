@@ -1,6 +1,8 @@
 ---
 title: "Comparison of Algorithms Across Business Lines"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 
@@ -8,20 +10,21 @@ output: html_notebook
 source('report_fun.R')
 
 
+# This section sets up the choice of business lines to be analyzed as well as the MCMC parameters
+
 iter = 1200
 warmup = 500
-chains = 6
+chains = 8
 adapt_delta = 0.9
-max_treedepth = 11
+max_treedepth = 12
 business_lines = c("comauto", "medmal", "othliab","ppauto","prodliab", "wkcomp")
-# business_lines = c("medmal")
-business_lines = c("prodliab")
+#business_lines = c("prodliab")
 
 
 #limit number of cases per line
 if (F){
   table(data[, c("line", "GRCODE")])
-  company_max = 1
+  company_max = 2
   for (bus in business_lines){
     all_lines = unique(data$GRCODE[data$line == bus])
     data = data %>%
@@ -73,8 +76,12 @@ The priors for rho are determined using the Betancourt method.  This fits an inv
 ILR models train on 10x10 squares of incremental claims
 
 ```{r echo=FALSE}
+
+# Options:  
 alpha = 0.001
-alpha = 0.1
+
+# Options:  Preferable for plain model
+#alpha = 0.1
 
 
 
@@ -156,12 +163,7 @@ res_gp_inc = all_business_line_calcs(business_lines = business_lines, data = dat
                                      formula_H = y_scaled ~ AccidentYear_scaled + log(DevelopmentLag) -1,
                                      stanFile =  "gp_compound_mean_het_05.stan")
 
-#save(res_gp_inc , file = paste0(output_dir, "report_algos_gp_inc.RData"))
-#save(res_gp_inc , file = paste0(output_dir, "report_algos_gp_inc_long_run.RData"))
-#save(res_gp_inc , file = paste0(output_dir, "report_algos_gp_inc_prodliab.RData"))
-#save(res_gp_inc , file = paste0(output_dir, "report_algos_gp_inc_medmal2.RData"))
-#save(res_gp_inc , file = paste0(output_dir, "report_algos_gp_inc_wkcomp.RData"))
-#save(res_gp_inc , file = paste0(output_dir, "report_algos_gp_inc_wkcomp2.RData"))
+save(res_gp_inc , file = paste0(output_dir, "report_algos_gp_inc.RData"))
 #load( file = paste0(output_dir, "report_algos_gp_inc.RData"))
 
 
@@ -194,10 +196,7 @@ res_gp_inc_hurdle = all_business_line_calcs(business_lines = business_lines, dat
                                      stanFile = "gp_hurdle_phiapprox_05.stan")
 
 save(res_gp_inc_hurdle , file = paste0(output_dir, "report_algos_gp_inc_hurdle.RData"))
-save(res_gp_inc_hurdle , file = paste0(output_dir, "report_algos_gp_inc_hurdle_medmal2.RData"))
-#save(res_gp_inc_hurdle , file = paste0(output_dir, "report_algos_gp_inc_hurdle_medmal.RData"))
-#save(res_gp_inc_hurdle , file = paste0(output_dir, "report_algos_gp_inc_hurdle_wkcomp.RData"))
-load( file = paste0(output_dir, "report_algos_gp_inc_hurdle.RData"))
+#load( file = paste0(output_dir, "report_algos_gp_inc_hurdle.RData"))
 
 ```
 
@@ -232,16 +231,9 @@ res_gp_inc_hurdle_virtual = all_business_line_calcs(business_lines = business_li
                                      virtual_development_lag = 11,
                                      stanFile = "gp_hurdle_phiapprox_05.stan")
 save(res_gp_inc_hurdle_virtual , file = paste0(output_dir, "report_algos_gp_inc_hurdle_virtual.RData"))
-#save(res_gp_inc_hurdle_virtual , file = paste0(output_dir, "report_algos_gp_inc_hurdle_virtual_wkcomp.RData"))
-save(res_gp_inc_hurdle_virtual , file = paste0(output_dir, "report_algos_gp_inc_hurdle_virtual_medmal2.RData"))
-#save(res_gp_inc_hurdle_virtual , file = paste0(output_dir, "report_algos_gp_inc_hurdle_virtual_prodliab.RData"))
-# save(res_gp_inc_hurdle_virtual , file = paste0(output_dir, "report_algos_gp_inc_hurdle_virtual_all2.RData"))
-# save(res_gp_inc_hurdle_virtual , file = paste0(output_dir, "report_algos_gp_inc_hurdle_virtual_all.RData"))
-# save(res_gp_inc_hurdle_virtual , file = paste0(output_dir, "report_algos_gp_inc_hurdle_virtual.RData"))
-load( file = paste0(output_dir, "report_algos_gp_inc_hurdle_virtual.RData"))
+#load( file = paste0(output_dir, "report_algos_gp_inc_hurdle_virtual.RData"))
 
 ```
-
 
 
 
