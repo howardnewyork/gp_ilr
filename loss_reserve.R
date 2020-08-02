@@ -26,7 +26,7 @@ library(ChainLadder)
 
 library(rstan)
 #options(mc.cores = min(10,parallel::detectCores()))
-options(mc.cores = min(8,parallel::detectCores()))
+options(mc.cores = min(parallel::detectCores()))
 rstan_options(auto_write = TRUE)
 
 library(DiceKriging)

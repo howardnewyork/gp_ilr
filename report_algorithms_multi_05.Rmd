@@ -7,9 +7,9 @@ output: html_notebook
 ```{r include=FALSE, echo=FALSE,message=FALSE, results='hide'}
 source('loss_multi_company.R')
 
-iter = 800
+iter = 1000
 warmup = 500
-iter_multi=800
+iter_multi=1000
 warmup_multi=200
 
 chains = 8

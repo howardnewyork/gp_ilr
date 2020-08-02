@@ -144,64 +144,6 @@ functions {
 
   
   
-  // Binary kernel (alternative method of including categorical variable, using a one-hot encoding structure  not used)
-  // NOT USED
-  matrix cov_binary(vector[] c1, vector[] c2, real alpha, real delta, int no_input_vectors) {
-    
-    int N1 = size(c1);
-    int N2 = size(c2);
-    matrix[N1, N2] K;
-    
-    if(no_input_vectors == 1){
-      for (i in 1:N1) {
-        for (j in i:N2) {
-          K[i, j] = exp( - alpha * (1-(dot_product(c1[i], c2[j]))));
-          K[j, i] = K[i, j];
-        }
-      }
-    } else {
-      for (i in 1:N1) {
-        for (j in 1:N2) {
-          K[i, j] = exp( - alpha * (1-(dot_product(c1[i], c2[j]))));
-        }
-      }    
-    }
-    if (delta >0) {
-      K = add_diagonal(K, delta);
-    }
-    return K;
-  }
-
-  
-  // Random Walk kernel
-  matrix cov_random_walk(vector h1, vector h2, real theta, real delta, int no_input_vectors) {
-    
-    int N1 = rows(h1);
-    int N2 = rows(h2);
-    
-    matrix[N1, N2] K;
-    
-    if (no_input_vectors == 1){
-      for (i in 1:N1) {
-        for (j in i:N2) {
-          K[i, j] = theta * fmin(h1[i], h2[j]);
-          K[j, i] = K[i, j];
-        }
-      }
-    } else {
-        for (i in 1:N1) {
-          for (j in 1:N2) {
-            K[i, j] = theta * fmin(h1[i], h2[j]);
-          }
-        }
-    }
-    
-    if (delta >0) {
-      K = add_diagonal(K, delta);
-    }
-    return K;
-  }
-  
   
   // General function to calculate an advance kernel
   // In this case, it just case the square exponential kernel
