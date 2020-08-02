@@ -1,2 +1,1 @@
-# gp_ilr
-Gaussian Processes for Incremental Loss Ratios
+# Gaussian Processes for Incremental Loss Ratios
