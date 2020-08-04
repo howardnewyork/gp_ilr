@@ -5,6 +5,9 @@ This repository provides the code for the paper "Gaussian Process Models for Inc
 There are two notebooks which can be run, one for the individual company models and one for the multi company models.  Each of these notebooks provide references to the models and code used.  The notebooks allow for the choice of different prior assumptions and business lines to be tested.
 
 
+* The *data* directory contains the training and testing data.
+* The *stan* directory contains the stan files.
+
 # Individual Company Model
 
 See: [Individual Company Model](report_algorithms_05.Rmd)
